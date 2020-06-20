@@ -1,35 +1,33 @@
 <template>
   <div class="s-wrapper">
-    <div class="s-selected" @click="expand()" ref="selected">
+    <div class="s-selected" :class="{'s-expanded_border': expanded}" @click="expand()" ref="selected">
       {{ showSelected }}
       <img src="@/assets/icn-arrow-down.svg" alt="Arrow" ref="image">
     </div>
-    <div class="s-modal" :class="{'s-modal-expanded': expanded}" ref="modal">
+    <div class="s-modal" :class="{'s-modal-expanded': expanded}">
       <div class="s-search">
         <input type="text" placeholder="Search for a user..." v-model="search">
         <img 
           src="@/assets/search.svg" 
-          alt="Search" 
-          ref="search" 
+          alt="Search"
           class="icon-search"
         >
         <img 
           src="@/assets/icn-close.svg" 
-          alt="Close" 
-          ref="close" 
+          alt="Close"
           @click="reset_search" 
           v-show="search != ''" 
           class="icon-close"
         >
       </div>
-      <div class="s-list">
+      <div class="s-list" ref="modal">
         <div v-show="search == ''">
-          <input type="checkbox" @click="selectAll" v-model="allSelected">
-          <label>Select all</label>
+          <input id="sAll" type="checkbox" @click="selectAll" v-model="allSelected">
+          <label for="sAll">Select all</label>
         </div>
         <ul>
           <li v-for="(user, i) in searchedUsers" :key="i">
-            <input type="checkbox" :id="user" :value="user" v-model="selectedUsers">
+            <input type="checkbox" :id="user" :value="user" v-model="selectedUsers" class="filled-in">
             <label :for="user">{{ user }}</label>
           </li>
         </ul>
@@ -40,31 +38,12 @@
 </template>
 
 <script>
+import users from '@/data/users.json'
+
 export default {
   data() {
     return {
-      users: [
-        'zena.huels@gmail.com',
-        'welch.lauren@gmail.com',
-        'tillman.marisa@cole.com',
-        'mariela.lesch@gmail.com',
-        'abshire.bertrand@hotmail.com',
-        'bledner@hotmail.com',
-        'skreiger@jacobs.biz',
-        'dbrakus@yahoo.com',
-        'tyra.heidenreich@powlowski.com',
-        'vwehner@tremblay.com',
-        'kessler.eugene@gmail.com',
-        'murray.spencer@wisozk.info',
-        'toby63@welch.com',
-        'rashawn51@yahoo.com',
-        'kelsi.crona@crona.net',
-        'keebler.monty@mann.com',
-        'blanda.rhett@gaylord.com',
-        'lebsack.kristy@hotmail.com',
-        'bridget33@schuster.com',
-        'herzog.maymie@wehner.com'
-      ],
+      users,
       showSelected: 'No user selected',
       expanded: false,
       selectedUsers: [],
@@ -74,9 +53,8 @@ export default {
   },
   methods: {
     expand() {
-      // preventing text and img selection
-      let refs = [this.$refs.selected, this.$refs.modal] // putting refs in array and mapping to avoid redundacy
-      refs.map(ref => ref.addEventListener('mousedown', function(e){ e.preventDefault(); }, false))
+      let refs = [this.$refs.selected, this.$refs.modal]
+      refs.map(ref => ref.addEventListener('mousedown', function(e){ e.preventDefault() }, false))
       
       if(!this.expanded)
         this.$refs.image.setAttribute('style', `transform: rotateZ(180deg)`)
@@ -87,8 +65,8 @@ export default {
     selectAll() {
       this.selectedUsers = []
       this.allSelected = !this.allSelected
-      if(this.allSelected )
-        this.users.map(user => this.selectedUsers.push(user))
+      if(this.allSelected)
+        this.selectedUsers = this.users.map(user => user)
     },
     reset_search() {
       this.search = ''
@@ -123,18 +101,23 @@ export default {
 </script>
 
 <style>
+.s-wrapper {
+  position: relative;
+}
 .s-selected {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid red;
-  border-radius: 3px;
   padding: 10px;
-  width: 265px;
+  width: 235px;
   background: white;
   position: relative;
   z-index: 2;
   cursor: pointer;
+  background-color: #FFFFFF;
+  border: 1px solid #9B9B9B;
+  border-radius: 4px;
+  font-size: 14px;
 }
 .s-selected img {
   transition: transform 0.25s ease-in-out;
@@ -143,7 +126,7 @@ export default {
   border: 1px solid blue;
   border-radius: 3px;
   padding: 10px;
-  min-width: 265px;
+  min-width: 235px;
   margin-top: 5px;
   opacity: 0;
   position: absolute;
@@ -152,12 +135,19 @@ export default {
   z-index: -1;
   background: white;
   width: fit-content;
-  overflow-y: scroll;
+  background-color: #FFF;
+  border: 1px solid #CFCFCF;
+  border-radius: 4px;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.3);
+  font-size: 14px;
 }
 .s-modal-expanded {
   opacity: 1;
-  top: 45px;
+  top: 50px;
   z-index: 0;
+}
+.s-expanded_border {
+  border: 1px solid #00A88D;
 }
 .s-modal ul {
   list-style-type: none;
@@ -172,8 +162,14 @@ export default {
 .s-search input{
   padding: 10px;
   padding-left: 35px;
-  border-radius: 5px;
   width: 100%;
+  background-color: #F4F4F4;
+  border-radius: 4px;
+  border: none;
+}
+.s-search input:focus {
+  /* outline-color: #00A88D; */
+  outline: none;
 }
 .icon-search {
   position: absolute;
@@ -187,11 +183,32 @@ export default {
 .s-list {
   margin-top: 12px;
   height: 300px;
+  overflow-y: scroll;
+  /* FireFox scrollbar */
+  scrollbar-color: #CFCFCF #F4F4F4;
+  scrollbar-width: thin;
+}
+/* Chrome scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F4F4; 
+}
+::-webkit-scrollbar-thumb {
+  background: #CFCFCF;
+  border-radius: 7px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b5b5b5; 
 }
 .s-list label {
   cursor: pointer;
 }
 .s-list label:hover {
-  color: red;
+  color: #00A88D;
 }
+
+/* CHECKBOX */
+
 </style>
