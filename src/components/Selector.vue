@@ -26,28 +26,30 @@
           <label for="sAll">Select all</label>
         </div>
         <ul>
-          <li v-for="(user, i) in searchedUsers" :key="i">
-            <input type="checkbox" :id="user" :value="user" v-model="selectedUsers" class="filled-in">
-            <label :for="user">{{ user }}</label>
+          <li v-for="(item, i) in searchedItems" :key="i">
+            <input type="checkbox" :id="item" :value="item" v-model="selectedItems" class="filled-in">
+            <label :for="item">{{ item }}</label>
           </li>
         </ul>
-        <span v-show="!searchedUsers.length">No Results Found</span>
+        <span v-show="!searchedItems.length">No Results Found</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import users from '@/data/users.json'
-
 export default {
-  props: ['data_list'],
+  props: {
+    payload: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      // users,
-      showSelected: 'No user selected',
+      showSelected: this.payload.message, // No user selected
       expanded: false,
-      selectedUsers: [],
+      selectedItems: [],
       allSelected: false,
       search: ''
     }
@@ -64,35 +66,35 @@ export default {
       this.expanded = !this.expanded
     },
     selectAll() {
-      this.selectedUsers = []
+      this.selectedItems = []
       this.allSelected = !this.allSelected
       if(this.allSelected)
-        this.selectedUsers = this.users.map(user => user)
+        this.selectedItems = this.payload.list.map(item => item)
     },
     reset_search() {
       this.search = ''
     }
   },
   watch: {
-    selectedUsers() {
-      let count = this.selectedUsers.length
-      count > 1 ?
-        this.showSelected = `${count} selected` :
-        this.showSelected = this.selectedUsers[0]
+    selectedItems() {
+      let count = this.selectedItems.length
+      count > 1 && !this.allSelected ?
+        this.showSelected = `${count} selected` : this.allSelected == true ? this.showSelected = 'All selected' :
+        this.showSelected = this.selectedItems[0]
       if(count == 0) {
-        this.showSelected = 'No user selected'
+        this.showSelected = this.payload.message // No user selected
       }
       this.allSelected = false
-      console.log(this.selectedUsers)
+      console.log(this.selectedItems)
     },
     search() {
-      console.log(this.searchedUsers)
+      console.log(this.searchedItems)
     }
   },
   computed: {
-    searchedUsers() {
-      return this.users.filter(user => {
-        return user
+    searchedItems() {
+      return this.payload.list.filter(item => {
+        return item
         .toLowerCase()
         .includes(this.search.toLowerCase())
       })

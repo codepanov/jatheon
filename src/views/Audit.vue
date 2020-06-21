@@ -29,7 +29,7 @@
       </div>
     </header>
     <section>
-      <Selector />
+      <Selector :payload="users"/>
     </section>
     <article>
       <img 
@@ -44,6 +44,7 @@
 
 <script>
 import Selector from '@/components/Selector.vue'
+import users from '@/data/users.json'
 
 export default {
   components: {
@@ -51,6 +52,7 @@ export default {
   },
   data() {
     return {
+      users,
       expanded: false
     }
   },
