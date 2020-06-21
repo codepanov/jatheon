@@ -38,12 +38,13 @@
 </template>
 
 <script>
-import users from '@/data/users.json'
+// import users from '@/data/users.json'
 
 export default {
+  props: ['data_list'],
   data() {
     return {
-      users,
+      // users,
       showSelected: 'No user selected',
       expanded: false,
       selectedUsers: [],
@@ -108,8 +109,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
-  width: 235px;
+  padding: 8px 10px;
+  width: 255px;
   background: white;
   position: relative;
   z-index: 2;
@@ -126,7 +127,6 @@ export default {
   border: 1px solid blue;
   border-radius: 3px;
   padding: 10px;
-  min-width: 235px;
   margin-top: 5px;
   opacity: 0;
   position: absolute;
@@ -134,7 +134,7 @@ export default {
   transition: all 0.5s;
   z-index: -1;
   background: white;
-  width: fit-content;
+  /* min-width: 255px; */
   background-color: #FFF;
   border: 1px solid #CFCFCF;
   border-radius: 4px;
@@ -182,6 +182,7 @@ export default {
 }
 .s-list {
   margin-top: 12px;
+  min-width: 255px;
   height: 300px;
   overflow-y: scroll;
   /* FireFox scrollbar */
