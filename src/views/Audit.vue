@@ -20,7 +20,7 @@
         <p>john.doe@jatheon.com</p>
         <p>Jatheon Technologies</p>
         <div class="separator"></div>
-        <!-- Left here as a reminder taht those should be links to their respective routes -->
+        <!-- Left this comment here as a reminder taht those should be links to their respective routes -->
         <!-- <router-link to="#">Account Settings</router-link> -->
         <p class="acc-bottom">Account Settings</p>
         <p class="acc-bottom">Company Settings</p>
@@ -29,7 +29,11 @@
       </div>
     </header>
     <section>
-      <Selector :payload="users"/>
+      <Selector :payload="users" @disable="disable" />
+      <Disabled :payload="actions" v-if="disabled" />
+      <Selector :payload="actions" v-else />
+      <FilterInput />
+      <button>Search Now</button>
     </section>
     <article>
       <img 
@@ -44,16 +48,23 @@
 
 <script>
 import Selector from '@/components/Selector.vue'
+import Disabled from '@/components/Disabled.vue'
+import FilterInput from '@/components/Filter_input.vue'
 import users from '@/data/users.json'
+import actions from '@/data/actions.json'
 
 export default {
   components: {
-    Selector
+    Selector,
+    Disabled,
+    FilterInput
   },
   data() {
     return {
       users,
-      expanded: false
+      actions,
+      expanded: false,
+      disabled: true  // used to disable second drop down
     }
   },
   methods: {
@@ -65,7 +76,10 @@ export default {
       else
         this.$refs.image.setAttribute('style', `transform: rotateZ(0deg)`)
       this.expanded = !this.expanded
-    }
+    },
+    disable(value) {
+    this.disabled = value
+  },
   }
 }
 </script>
@@ -179,7 +193,7 @@ section {
   align-items: center;
   border-bottom: 1px solid #CFCFCF;
   box-sizing: border-box;
-  padding-left: 20px;
+  padding-left: 5px;
 }
 article {
   height: 100%;
@@ -194,5 +208,24 @@ article p:nth-child(3) {
   color: #3E4543;
   font-size: 14px;
   margin-top: 0;
+}
+button {
+  background-color: #CFCFCF;
+  color: #9B9B9B;
+  /* background-color: #00A88D;
+  color: white; */
+  font-family: 'Open Sans';
+  font-weight: 600;
+  border-radius: 4px;
+  margin-left: 15px;
+  border: none;
+  padding: 9px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+}
+button:focus {
+  outline: none;
 }
 </style>

@@ -1,4 +1,5 @@
 {
+  "type": "users",
   "message": "No user selected",
   "list": [
     "john.doe@jatheon.com",

@@ -5,7 +5,7 @@
       <img src="@/assets/icn-arrow-down.svg" alt="Arrow" ref="image">
     </div>
     <div class="s-modal" :class="{'s-modal-expanded': expanded}">
-      <div class="s-search">
+      <div class="s-search" v-show="payload.type == 'users'">
         <input type="text" placeholder="Search for a user..." v-model="search">
         <img 
           src="@/assets/search.svg" 
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     payload: {
@@ -78,6 +79,10 @@ export default {
   watch: {
     selectedItems() {
       let count = this.selectedItems.length
+      if(!count)
+        this.$emit('disable', true)
+      else
+        this.$emit('disable', false)
       count > 1 && !this.allSelected ?
         this.showSelected = `${count} selected` : this.allSelected == true ? this.showSelected = 'All selected' :
         this.showSelected = this.selectedItems[0]
@@ -121,6 +126,7 @@ export default {
   border: 1px solid #9B9B9B;
   border-radius: 4px;
   font-size: 14px;
+  margin-left: 15px;
 }
 .s-selected img {
   transition: transform 0.25s ease-in-out;
@@ -130,6 +136,7 @@ export default {
   border-radius: 3px;
   padding: 10px;
   margin-top: 5px;
+  margin-left: 15px;
   opacity: 0;
   position: absolute;
   top: -5px;
