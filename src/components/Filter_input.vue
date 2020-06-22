@@ -40,7 +40,7 @@ export default {
         this.$emit('filter', true)
       else
         this.$emit('filter', false)
-      console.log(this.filter)
+      // console.log(this.filter)
     }
   }
 }

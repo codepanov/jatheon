@@ -143,4 +143,16 @@ button:focus {
   background-color: #00A88D;
   color: white;
 }
+@media screen and (max-width: 808px) {
+  section {
+    height: auto;
+    padding-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  section > div, section > button {
+    margin-bottom: 10px;
+    width: 60vw;
+  }
+}
 </style>

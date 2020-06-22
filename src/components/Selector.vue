@@ -239,7 +239,17 @@ export default {
     z-index: 1;
   }
   .s-selected {
-    width: 180px;
+    width: 190px;
+    z-index: 0;
+  }
+}
+@media screen and (max-width: 808px) {
+  .s-search input {
+    width: 60vw!important;
+  }
+  .s-selected {
+    width: 60vw;
+    box-sizing: border-box;
   }
 }
 

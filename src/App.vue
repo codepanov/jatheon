@@ -41,7 +41,6 @@ body {
   color: #00A88D;
   font-size: 14px;
   line-height: 18px;
-  width: 180px;
   display: flex;
   align-items: center;
   text-align: left;
@@ -61,8 +60,8 @@ body {
   }
 }
 @media screen and (max-width: 808px) {
-  #app {
-    width: max-content;
+  header {
+    padding: 10px 20px!important;
   }
 }
 </style>
