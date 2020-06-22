@@ -23,10 +23,9 @@ body {
   font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* color: #2c3e50; */
 }
 #nav {
-  width: 250px;
+  /* width: 250px; */
   padding: 20px;
   background-color: #E1E7E9;
 }
@@ -40,7 +39,6 @@ body {
 }
 .settings {
   color: #00A88D;
-  /* font-family: 'Open Sans'; */
   font-size: 14px;
   line-height: 18px;
   width: 180px;
@@ -48,5 +46,23 @@ body {
   align-items: center;
   text-align: left;
   margin-top: 25px;
+}
+@media screen and (max-width: 1170px) {
+  #app {
+    display: block;
+  }
+  #nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .settings {
+    margin: 0;
+  }
+}
+@media screen and (max-width: 808px) {
+  #app {
+    width: max-content;
+  }
 }
 </style>

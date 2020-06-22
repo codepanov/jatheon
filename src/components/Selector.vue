@@ -4,7 +4,8 @@
       {{ showSelected }}
       <img src="@/assets/icn-arrow-down.svg" alt="Arrow" ref="image">
     </div>
-    <div class="s-modal" :class="{'s-modal-expanded': expanded}">
+    <!-- animates modal element by binding ...expended class -->
+    <div class="s-modal" :class="{'s-modal-expanded': expanded}"> 
       <div class="s-search" v-show="payload.type == 'users'">
         <input type="text" placeholder="Search for a user..." v-model="search">
         <img 
@@ -12,11 +13,12 @@
           alt="Search"
           class="icon-search"
         >
+        <!-- imag shows if search property is not empty string -->
         <img 
           src="@/assets/icn-close.svg" 
           alt="Close"
           @click="reset_search" 
-          v-show="search != ''" 
+          v-show="search != ''"
           class="icon-close"
         >
       </div>
@@ -38,7 +40,6 @@
 </template>
 
 <script>
-
 export default {
   props: {
     payload: {
@@ -56,10 +57,15 @@ export default {
     }
   },
   methods: {
+    /**
+     * preventing text and img selection on doubleclick
+     * putting refs in array and mapping to avoid redundacy
+     */
     expand() {
       let refs = [this.$refs.selected, this.$refs.modal]
       refs.map(ref => ref.addEventListener('mousedown', function(e){ e.preventDefault() }, false))
       
+      // rotating arrow on click
       if(!this.expanded)
         this.$refs.image.setAttribute('style', `transform: rotateZ(180deg)`)
       else
@@ -69,7 +75,7 @@ export default {
     selectAll() {
       this.selectedItems = []
       this.allSelected = !this.allSelected
-      if(this.allSelected)
+      if(this.allSelected) //has to check if true because line above will switch to false at one point and we do not want to map users in that case, we just need an empty array of selected users
         this.selectedItems = this.payload.list.map(item => item)
     },
     reset_search() {
@@ -83,12 +89,14 @@ export default {
         this.$emit('disable', true)
       else
         this.$emit('disable', false)
-      count > 1 && !this.allSelected ?
-        this.showSelected = `${count} selected` : this.allSelected == true ? this.showSelected = 'All selected' :
+      // logic that handles selected users message
+      count > 1 ?
+        this.showSelected = `${count} selected` :
         this.showSelected = this.selectedItems[0]
       if(count == 0) {
         this.showSelected = this.payload.message // No user selected
       }
+      // whenever something changes in selectedUsers array we reset this field to its default state (false). It has to be false because SELECT ALL is connected through v-model
       this.allSelected = false
       console.log(this.selectedItems)
     },
@@ -97,6 +105,12 @@ export default {
     }
   },
   computed: {
+    /**
+     * this computes through v-modeled search input
+     * by filtering every character
+     * and compares through includes
+     * with every iteration of the current array of users
+     */
     searchedItems() {
       return this.payload.list.filter(item => {
         return item
@@ -177,8 +191,8 @@ export default {
   border: none;
 }
 .s-search input:focus {
-  /* outline-color: #00A88D; */
-  outline: none;
+  outline-color: #00A88D;
+  /* outline: none; */
 }
 .icon-search {
   position: absolute;
@@ -217,6 +231,14 @@ export default {
 }
 .s-list label:hover {
   color: #00A88D;
+}
+@media screen and (max-width: 1170px) {
+  .s-modal-expanded {
+    z-index: 1;
+  }
+  .s-selected {
+    width: 180px;
+  }
 }
 
 /* CHECKBOX */

@@ -31,6 +31,16 @@ export default {
   methods: {
     reset_filter() {
       this.filter = ''
+      this.$emit('filter', false)
+    }
+  },
+  watch: {
+    filter() {
+      if(this.filter != '')
+        this.$emit('filter', true)
+      else
+        this.$emit('filter', false)
+      console.log(this.filter)
     }
   }
 }
