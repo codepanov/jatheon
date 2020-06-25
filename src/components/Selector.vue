@@ -24,8 +24,10 @@
       </div>
       <div class="s-list" ref="modal">
         <div v-show="search == ''">
+          <label>
           <input id="sAll" type="checkbox" @click="selectAll" v-model="allSelected">
-          <label for="sAll">Select all</label>
+          Select all
+          </label>
         </div>
         <ul>
           <li v-for="(item, i) in searchedItems" :key="i">
@@ -57,11 +59,11 @@ export default {
     }
   },
   methods: {
-    /**
+    expand() {
+      /**
      * preventing text and img selection on doubleclick
      * putting refs in array and mapping to avoid redundacy
      */
-    expand() {
       let refs = [this.$refs.selected, this.$refs.modal]
       refs.map(ref => ref.addEventListener('mousedown', function(e){ e.preventDefault() }, false))
       
